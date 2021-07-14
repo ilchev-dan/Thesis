@@ -37,7 +37,43 @@ namespace Thesis
         private void itemSave_Click(object sender, RoutedEventArgs e)
         {
             _context.SaveChanges();
-            hereDataGrid.Items.Refresh();
+            dgTables.Items.Refresh();
+        }
+
+        private void itemEquipment_Click(object sender, RoutedEventArgs e)
+        {
+            _context.Equipments.Load();
+
+            equipmentViewSource.Source = _context.Equipments.Local.ToObservableCollection();
+
+            dgTables.Items.Refresh();
+        }
+
+        private void itemEvent_Click(object sender, RoutedEventArgs e)
+        {
+            _context.Events.Load();
+
+            equipmentViewSource.Source = _context.Events.Local.ToObservableCollection();
+
+            dgTables.Items.Refresh();
+        }
+
+        private void itemWorkplace_Click(object sender, RoutedEventArgs e)
+        {
+            _context.Workplaces.Load();
+
+            equipmentViewSource.Source = _context.Workplaces.Local.ToObservableCollection();
+
+            dgTables.Items.Refresh();
+        }
+
+        private void itemWorkplaceForEvent_Click(object sender, RoutedEventArgs e)
+        {
+            _context.WorkplaceForEvents.Load();
+
+            equipmentViewSource.Source = _context.WorkplaceForEvents.Local.ToObservableCollection();
+
+            dgTables.Items.Refresh();
         }
     }
 }

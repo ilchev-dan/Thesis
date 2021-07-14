@@ -27,24 +27,17 @@
             </MenuItem>
 
             <MenuItem Header="Изменить">
-                <MenuItem x:Name="itemEquipment" Header="Equipment table"></MenuItem>
-                <MenuItem x:Name="itemEvent" Header="Event table"></MenuItem>
-                <MenuItem x:Name="itemWorkplace" Header="Workplace table"></MenuItem>
-                <MenuItem x:Name="itemWorkplaceForEvent" Header="WorkplaceForEvent table"></MenuItem>
+                <MenuItem x:Name="itemEquipment" Header="Equipment table" Click="itemEquipment_Click"></MenuItem>
+                <MenuItem x:Name="itemEvent" Header="Event table" Click="itemEvent_Click"></MenuItem>
+                <MenuItem x:Name="itemWorkplace" Header="Workplace table" Click="itemWorkplace_Click"></MenuItem>
+                <MenuItem x:Name="itemWorkplaceForEvent" Header="WorkplaceForEvent table" Click="itemWorkplaceForEvent_Click"></MenuItem>
             </MenuItem>
         </Menu>
 
-        <DataGrid Grid.Row="1" x:Name="hereDataGrid"
+        <DataGrid Grid.Row="1" x:Name="dgTables"
                   ItemsSource="{Binding Source={StaticResource equipmentViewSource}}"
                   EnableRowVirtualization="True"
                   RowDetailsVisibilityMode="VisibleWhenSelected">
-            <!--<DataGrid.Columns>
-                <--><!--DataGridTextColumn Binding="{Binding EquipmentId}" Header="Id" Width="SizeToHeader" IsReadOnly="True"/>
-                <DataGridTextColumn Binding="{Binding NameEquip}" Header="Название позиции"/>
-                <DataGridTextColumn Binding="{Binding DescriptionEquip}" Header="Описание позиции"/>
-                <DataGridTextColumn Binding="{Binding UnitEquip}" Header="Кол-во"/>
-                <DataGridTextColumn Binding="{Binding Comment}" Header="Комментарий"/>--><!--
-            </DataGrid.Columns>-->
         </DataGrid>
 
     </Grid>
