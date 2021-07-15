@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Data;
 
 namespace Thesis
@@ -34,45 +35,40 @@ namespace Thesis
             
         }
 
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is MenuItem menuItem)
+            {
+                // Determines which button is pressed
+                if (menuItem == itemEquipment)
+                {
+                    equipmentViewSource.Source = Services.GetObservableCollection<Equipment>();
+                    Title = "Editing a database(Table \"Equipment\")";
+                }
+                else if (menuItem == itemEvent)
+                {
+                    equipmentViewSource.Source = Services.GetObservableCollection<Event>();
+                    Title = "Editing a database(Table \"Event\")";
+                }
+                else if (menuItem == itemWorkplace)
+                {
+                    equipmentViewSource.Source = Services.GetObservableCollection<Workplace>();
+                    Title = "Editing a database(Table \"Workplace\")";
+                }
+                else if (menuItem == itemWorkplaceForEvent)
+                {
+                    equipmentViewSource.Source = Services.GetObservableCollection<WorkplaceForEvent>();
+                    Title = "Editing a database(Table \"Workplace of the event\")";
+                }
+
+                // Updates the DataGrid
+                dgTables.Items.Refresh();
+            }
+        }
+
         private void itemSave_Click(object sender, RoutedEventArgs e)
         {
             _context.SaveChanges();
-            dgTables.Items.Refresh();
-        }
-
-        private void itemEquipment_Click(object sender, RoutedEventArgs e)
-        {
-            _context.Equipments.Load();
-
-            equipmentViewSource.Source = _context.Equipments.Local.ToObservableCollection();
-
-            dgTables.Items.Refresh();
-        }
-
-        private void itemEvent_Click(object sender, RoutedEventArgs e)
-        {
-            _context.Events.Load();
-
-            equipmentViewSource.Source = _context.Events.Local.ToObservableCollection();
-
-            dgTables.Items.Refresh();
-        }
-
-        private void itemWorkplace_Click(object sender, RoutedEventArgs e)
-        {
-            _context.Workplaces.Load();
-
-            equipmentViewSource.Source = _context.Workplaces.Local.ToObservableCollection();
-
-            dgTables.Items.Refresh();
-        }
-
-        private void itemWorkplaceForEvent_Click(object sender, RoutedEventArgs e)
-        {
-            _context.WorkplaceForEvents.Load();
-
-            equipmentViewSource.Source = _context.WorkplaceForEvents.Local.ToObservableCollection();
-
             dgTables.Items.Refresh();
         }
     }

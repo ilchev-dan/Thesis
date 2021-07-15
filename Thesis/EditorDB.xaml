@@ -27,10 +27,10 @@
             </MenuItem>
 
             <MenuItem Header="Изменить">
-                <MenuItem x:Name="itemEquipment" Header="Equipment table" Click="itemEquipment_Click"></MenuItem>
-                <MenuItem x:Name="itemEvent" Header="Event table" Click="itemEvent_Click"></MenuItem>
-                <MenuItem x:Name="itemWorkplace" Header="Workplace table" Click="itemWorkplace_Click"></MenuItem>
-                <MenuItem x:Name="itemWorkplaceForEvent" Header="WorkplaceForEvent table" Click="itemWorkplaceForEvent_Click"></MenuItem>
+                <MenuItem x:Name="itemEquipment" Header="Equipment table" Click="MenuItem_Click"></MenuItem>
+                <MenuItem x:Name="itemEvent" Header="Event table" Click="MenuItem_Click"></MenuItem>
+                <MenuItem x:Name="itemWorkplace" Header="Workplace table" Click="MenuItem_Click"></MenuItem>
+                <MenuItem x:Name="itemWorkplaceForEvent" Header="WorkplaceForEvent table" Click="MenuItem_Click"></MenuItem>
             </MenuItem>
         </Menu>
 
