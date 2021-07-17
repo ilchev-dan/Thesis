@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 
@@ -10,15 +9,28 @@ namespace Thesis
     /// </summary>
     public partial class EditorDB : Window
     {
-
-        private readonly EquipmentContext _context = new();
-
         private CollectionViewSource equipmentViewSource;
 
         public EditorDB()
         {
             InitializeComponent();
+
             equipmentViewSource = (CollectionViewSource)FindResource(nameof(equipmentViewSource));
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            equipmentViewSource.Source = Services.GetObservableCollection<Equipment>();
+
+            Services.ColumnPlaceholder<Equipment>(dgTables);
+
+            Title = "Editing the DB(Table \"Equipment\")";
+        }
+
+        private void itemSave_Click(object sender, RoutedEventArgs e)
+        {
+            Services.context.SaveChanges();
+            dgTables.Items.Refresh();
         }
 
         private void itemBack_Click(object sender, RoutedEventArgs e)
@@ -28,47 +40,54 @@ namespace Thesis
             Close();
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            _context.Equipments.Load();
-            equipmentViewSource.Source = _context.Equipments.Local.ToObservableCollection();
-            
+            MessageBoxResult mbRes = MessageBox.Show("Save changes before exiting?", "Changing the DB", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
+            if (mbRes == MessageBoxResult.Yes)
+                Services.context.SaveChanges();
+            else if (mbRes == MessageBoxResult.Cancel)
+                e.Cancel = true;
         }
 
+        /// <summary>
+        /// Event handler for the "Edit" menu buttons"
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
-            if (sender is MenuItem menuItem)
+            MenuItem btn = (MenuItem)sender;
+
+            if (MessageBox.Show("Save changes before exiting?", "Changing the DB", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+                Services.context.SaveChanges();
+
+            // Determines which button is pressed
+            if (btn == itemEquipment)
             {
-                // Determines which button is pressed
-                if (menuItem == itemEquipment)
-                {
-                    equipmentViewSource.Source = Services.GetObservableCollection<Equipment>();
-                    Title = "Editing a database(Table \"Equipment\")";
-                }
-                else if (menuItem == itemEvent)
-                {
-                    equipmentViewSource.Source = Services.GetObservableCollection<Event>();
-                    Title = "Editing a database(Table \"Event\")";
-                }
-                else if (menuItem == itemWorkplace)
-                {
-                    equipmentViewSource.Source = Services.GetObservableCollection<Workplace>();
-                    Title = "Editing a database(Table \"Workplace\")";
-                }
-                else if (menuItem == itemWorkplaceForEvent)
-                {
-                    equipmentViewSource.Source = Services.GetObservableCollection<WorkplaceForEvent>();
-                    Title = "Editing a database(Table \"Workplace of the event\")";
-                }
-
-                // Updates the DataGrid
-                dgTables.Items.Refresh();
+                equipmentViewSource.Source = Services.GetObservableCollection<Equipment>();
+                Services.ColumnPlaceholder<Equipment>(dgTables);
+                Title = "Editing the DB(Table \"Equipment\")";
             }
-        }
+            else if (btn == itemEvent)
+            {
+                equipmentViewSource.Source = Services.GetObservableCollection<Event>();
+                Services.ColumnPlaceholder<Event>(dgTables);
+                Title = "Editing the DB(Table \"Event\")";
+            }
+            else if (btn == itemWorkplace)
+            {
+                equipmentViewSource.Source = Services.GetObservableCollection<Workplace>();
+                Services.ColumnPlaceholder<Workplace>(dgTables);
+                Title = "Editing the DB(Table \"Workplace\")";
+            }
+            else if (btn == itemWorkplaceForEvent)
+            {
+                equipmentViewSource.Source = Services.GetObservableCollection<WorkplaceForEvent>();
+                Services.ColumnPlaceholder<WorkplaceForEvent>(dgTables);
+                Title = "Editing the DB(Table \"Workplace for Event\")";
+            }
 
-        private void itemSave_Click(object sender, RoutedEventArgs e)
-        {
-            _context.SaveChanges();
+            // Updates the DataGrid
             dgTables.Items.Refresh();
         }
     }
